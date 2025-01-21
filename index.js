@@ -1,7 +1,9 @@
 import cors from "cors";
 import dotenv from "dotenv";
 import express from "express";
+import { globalError } from "./rsc/error/globalError.js";
 import { notFoundRoute } from "./rsc/error/notFoundRoute.js";
+import { userRoute } from "./rsc/modules/users/user.router.js";
 import { main } from "./rsc/server/server.js";
 
 const app = express();
@@ -26,5 +28,7 @@ app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 
+app.use("/api/v1/user", userRoute);
 
-app.all('*', notFoundRoute);
+app.all("*", notFoundRoute);
+app.use(globalError);
