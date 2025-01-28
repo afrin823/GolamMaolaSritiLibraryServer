@@ -5,12 +5,14 @@ const bookSchema = mongoose.Schema(
     createdBy: {
       type: Schema.Types.ObjectId,
       required: [true, "User id is required"],
-      unique: true,
-      ref: "User",
+      ref: "userCollection",
     },
     bookName: {
       type: String,
       require: true,
+    },
+    registrationNo: {
+      type: String,
     },
     image: {
       type: String,
