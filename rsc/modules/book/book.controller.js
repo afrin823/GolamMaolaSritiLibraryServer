@@ -37,7 +37,7 @@ const deleteSingleBook = catchAsync(async (req, res) => {
 const getAllBook = catchAsync(async (req, res) => {
   const result = await bookServer.getAllBookDB(req.query);
   sendResponse(res, {
-    statusCode: 201,
+    statusCode: 200,
     success: true,
     message: "Book search Successfully",
     data: result,

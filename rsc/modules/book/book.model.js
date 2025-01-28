@@ -1,5 +1,20 @@
 import mongoose, { Schema } from "mongoose";
-
+const range = [
+  "Class 1",
+  "Class 2",
+  "Class 3",
+  "Class 4",
+  "Class 5",
+  "Class 6",
+  "Class 7",
+  "Class 8",
+  "Class 9",
+  "Class 10",
+  "Class 11",
+  "Class 12",
+  "Class 13",
+  "Class 14",
+];
 const bookSchema = mongoose.Schema(
   {
     createdBy: {
@@ -41,6 +56,10 @@ const bookSchema = mongoose.Schema(
       type: String,
       default: "Unknown",
     },
+    range: {
+      type: String,
+      enum: range,
+    },
     pages: {
       type: Number,
     },
@@ -64,9 +83,6 @@ const bookSchema = mongoose.Schema(
     bookshelfLocation: {
       type: String,
       default: "no select",
-    },
-    tags: {
-      type: [String], // ট্যাগ (যেমন: "ফিকশন", "বিজ্ঞান", "ইতিহাস")
     },
     description: {
       type: String,

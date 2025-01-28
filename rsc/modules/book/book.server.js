@@ -17,6 +17,7 @@ const createBookDB = async (payload) => {
 };
 
 const getAllBookDB = async (query) => {
+  const queryObj = { ...query };
   let searchTerm = "";
   if (query?.searchTerm) {
     searchTerm = query.searchTerm.replace(/"/g, "");
@@ -26,13 +27,49 @@ const getAllBookDB = async (query) => {
       [field]: { $regex: searchTerm, $options: "i" },
     })),
   });
-// filtering
-  const excludeFields = ["searchTerm"]
-
-  const result = await searchQuery
-    .find(query)
+  // filtering
+  const excludeFields = ["searchTerm", "sort", "limit", "page", "fields"];
+  excludeFields.forEach((el) => delete queryObj[el]);
+  console.log("query", { query, queryObj });
+  const filterByCategory = searchQuery
+    .find(queryObj)
     .populate("createdBy", "name email role");
-  return result;
+
+  let sort = "-createdAt";
+
+  if (query?.sort) {
+    sort = query.sort;
+  }
+
+  const sortQuery = filterByCategory.sort(sort);
+  let page = 1;
+  let limit = 1;
+  let skip = 0;
+
+  if (query?.limit) {
+    limit = Number(query.limit);
+  }
+
+  if (query?.page) {
+    page = Number(query.page);
+    skip = (page - 1) * limit;
+  }
+
+  const paginateQuery = sortQuery.skip(skip);
+
+  const limitQuery = paginateQuery.limit(limit);
+
+  // Field limiting for specific data
+
+  let fields = "-__v";
+  if (query?.fields) {
+    fields = query.fields.split(",").join(" ");
+    console.log(fields);
+  }
+
+  const fieldsQuery = await limitQuery.select(fields);
+  // 14-10 Refactor your code and build a Query Builder
+  return fieldsQuery;
 };
 
 const getSingleBookDB = async (id) => {
