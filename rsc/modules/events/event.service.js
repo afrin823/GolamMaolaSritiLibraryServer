@@ -1,4 +1,4 @@
-import MultiLanguageQueryBuilder from "../../builder/MultilanguageQueryBuilder.js";
+ import MultiLanguageQueryBuilder from "../../builder/MultiLanguageQueryBuilder.js";
 import AppError from "../../error/AppError.js";
 import {
     AnnualVariousCompetition,
