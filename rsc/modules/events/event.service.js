@@ -1,14 +1,39 @@
 import MultiLanguageQueryBuilder from "../../builder/MultilanguageQueryBuilder.js";
 import AppError from "../../error/AppError.js";
+import {
+    AnnualVariousCompetition,
+    NationalDayCelebration,
+    RegularEvents,
+} from "./event.constant.businessLogic.js";
 import { Event } from "./event.model.js";
+import { validateSubCategory } from "./event.utils.js";
 
 const createEventDB = async (payload) => {
-  const { createdBy, title, description, remark, image, content } = payload;
+  const {
+    createdBy,
+    title,
+    description,
+    remark,
+    image,
+    content,
+    category,
+    subCategory,
+  } = payload;
 
-  if (!createdBy || !title || !description || !remark || !image || !content) {
+  if (
+    !createdBy ||
+    !title ||
+    !description ||
+    !remark ||
+    !image ||
+    !content ||
+    !category ||
+    !subCategory
+  ) {
     throw new AppError(400, "All fields are required");
   }
 
+  // Title, description, remark validation
   if (!title.bn || !title.en) {
     throw new AppError(400, "Title must contain both Bangla and English");
   }
@@ -19,6 +44,27 @@ const createEventDB = async (payload) => {
     throw new AppError(400, "Remark must contain both Bangla and English");
   }
 
+
+
+  // Checking Category and Validating SubCategory
+  if (
+    category.bn === "জাতীয় দিবস উদযাপন" ||
+    category.en === "National Day Celebration"
+  ) {
+    validateSubCategory(subCategory, NationalDayCelebration);
+  }
+
+  if (
+    category.bn === "বার্ষিক বিভিন্ন প্রতিযোগিতা" ||
+    category.en === "Annual Various Competition"
+  ) {
+    validateSubCategory(subCategory, AnnualVariousCompetition);
+  }
+  if (category.bn === "নিয়মিত আয়োজন" || category.en === "Regular Events") {
+    validateSubCategory(subCategory, RegularEvents);
+  }
+
+  // Content validation
   if (content && content.length > 0) {
     content.forEach((item) => {
       if (!item.title2.bn || !item.title2.en) {
@@ -41,11 +87,13 @@ const createEventDB = async (payload) => {
     });
   }
 
+  // Modify content before saving
   const modifiedContent = content.map((item) => ({
     title2: `${item.title2.bn} / ${item.title2.en}`,
     list: item.list,
   }));
 
+  // Save data to the database
   const result = await Event.create({
     ...payload,
     content: modifiedContent,
@@ -56,7 +104,7 @@ const createEventDB = async (payload) => {
 
 const searchEventDB = async (query) => {
   const eventQuery = new MultiLanguageQueryBuilder(Event.find(), query)
-    .search(["title.en", "description.en"])
+    .search(["title.en", "description.en", "category.en"])
     .filter()
     .sort()
     .paginate()
