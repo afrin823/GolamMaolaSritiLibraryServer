@@ -34,6 +34,7 @@ const deleteSingleBook = catchAsync(async (req, res) => {
     data: result,
   });
 });
+
 const getAllBook = catchAsync(async (req, res) => {
   const result = await bookServer.getAllBookDB(req.query);
   sendResponse(res, {

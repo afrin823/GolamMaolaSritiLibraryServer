@@ -4,4 +4,5 @@ export const bookSearchingField = [
   "writerName",
   "publisher",
   "year",
+  "category"
 ];

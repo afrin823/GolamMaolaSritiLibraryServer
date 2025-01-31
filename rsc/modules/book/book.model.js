@@ -46,11 +46,12 @@ const bookSchema = mongoose.Schema(
       require: true,
     },
     edition: {
-      type: String, // সংস্করণ (যেমন: ১ম, ২য়)
+      type: String, 
     },
     ISBN: {
-      type: String, // আন্তর্জাতিক স্ট্যান্ডার্ড বুক নম্বর
+      type: String, 
       unique: true,
+      sparse: true,
     },
     language: {
       type: String,

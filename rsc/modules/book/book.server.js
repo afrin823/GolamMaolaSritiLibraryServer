@@ -1,8 +1,8 @@
 // import httpStatus from "http-status";
+import QueryBuilder from "../../builder/QueryBuilder.js";
 import AppError from "../../error/AppError.js";
 import { bookSearchingField } from "./book.constant.js";
 import { Book } from "./book.model.js";
-
 const createBookDB = async (payload) => {
   const isExist = await Book.findOne({
     bookName: payload.bookName,
@@ -17,59 +17,68 @@ const createBookDB = async (payload) => {
 };
 
 const getAllBookDB = async (query) => {
-  const queryObj = { ...query };
-  let searchTerm = "";
-  if (query?.searchTerm) {
-    searchTerm = query.searchTerm.replace(/"/g, "");
-  }
-  const searchQuery = Book.find({
-    $or: bookSearchingField.map((field) => ({
-      [field]: { $regex: searchTerm, $options: "i" },
-    })),
-  });
-  // filtering
-  const excludeFields = ["searchTerm", "sort", "limit", "page", "fields"];
-  excludeFields.forEach((el) => delete queryObj[el]);
-  console.log("query", { query, queryObj });
-  const filterByCategory = searchQuery
-    .find(queryObj)
-    .populate("createdBy", "name email role");
+  // const queryObj = { ...query };
+  // let searchTerm = "";
+  // if (query?.searchTerm) {
+  //   searchTerm = query.searchTerm.replace(/"/g, "");
+  // }
+  // const searchQuery = Book.find({
+  //   $or: bookSearchingField.map((field) => ({
+  //     [field]: { $regex: searchTerm, $options: "i" },
+  //   })),
+  // });
+  // // filtering
+  // const excludeFields = ["searchTerm", "sort", "limit", "page", "fields"];
 
-  let sort = "-createdAt";
+  // excludeFields.forEach((el) => delete queryObj[el]);
 
-  if (query?.sort) {
-    sort = query.sort;
-  }
+  // const filterByCategory = searchQuery
+  //   .find(queryObj)
+  //   .populate("createdBy", "name email role");
 
-  const sortQuery = filterByCategory.sort(sort);
-  let page = 1;
-  let limit = 1;
-  let skip = 0;
+  // let sort = "-createdAt";
+  // if (query?.sort) {
+  //   sort = query.sort;
+  // }
 
-  if (query?.limit) {
-    limit = Number(query.limit);
-  }
+  // const sortQuery = filterByCategory.sort(sort);
+  // let page = 1;
+  // let limit = 1;
+  // let skip = 0;
 
-  if (query?.page) {
-    page = Number(query.page);
-    skip = (page - 1) * limit;
-  }
+  // if (query?.limit) {
+  //   limit = Number(query.limit);
+  // }
 
-  const paginateQuery = sortQuery.skip(skip);
+  // if (query?.page) {
+  //   page = Number(query.page);
+  //   skip = (page - 1) * limit;
+  // }
 
-  const limitQuery = paginateQuery.limit(limit);
+  // const paginateQuery = sortQuery.skip(skip);
+
+  // const limitQuery = paginateQuery.limit(limit);
 
   // Field limiting for specific data
 
-  let fields = "-__v";
-  if (query?.fields) {
-    fields = query.fields.split(",").join(" ");
-    console.log(fields);
-  }
+  // let fields = "-__v";
+  // if (query?.fields) {
+  //   fields = query.fields.split(",").join(" ");
+  //   console.log(fields);
+  // }
 
-  const fieldsQuery = await limitQuery.select(fields);
-  // 14-10 Refactor your code and build a Query Builder
-  return fieldsQuery;
+  // const fieldsQuery = await limitQuery.select(fields);
+  // return fieldsQuery;
+
+  const bookQuery = new QueryBuilder(Book.find(), query)
+    .search(bookSearchingField)
+    .filter()
+    .sort()
+    .paginate()
+    .fields();
+
+  const result = await bookQuery.modelQuery;
+  return result;
 };
 
 const getSingleBookDB = async (id) => {
