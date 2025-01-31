@@ -44,8 +44,6 @@ const createEventDB = async (payload) => {
     throw new AppError(400, "Remark must contain both Bangla and English");
   }
 
-
-
   // Checking Category and Validating SubCategory
   if (
     category.bn === "জাতীয় দিবস উদযাপন" ||
@@ -104,7 +102,7 @@ const createEventDB = async (payload) => {
 
 const searchEventDB = async (query) => {
   const eventQuery = new MultiLanguageQueryBuilder(Event.find(), query)
-    .search(["title.en", "description.en", "category.en"])
+    .search(["title", "description", "category"])
     .filter()
     .sort()
     .paginate()
@@ -133,3 +131,15 @@ export const eventServer = {
   getSingleEventDB,
   deleteEventDB,
 };
+
+// search(searchableFields) {
+//   const searchTerm = this?.query?.searchTerm;
+//   if (searchTerm) {
+//     this.modelQuery = this.modelQuery.find({
+//       $or: searchableFields.map((field) => ({
+//         [field]: { $regex: searchTerm, $options: "i" },
+//       })),
+//     });
+//   }
+//   return this;
+// }
