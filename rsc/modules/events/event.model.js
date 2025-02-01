@@ -1,14 +1,18 @@
 import mongoose from "mongoose";
 
 const listSchema = new mongoose.Schema({
-  title2: { type: String, required: true },
-  list: [
-    {
+    title2: {
       bn: { type: String, required: true },
-      en: { type: String, required: true },
+      en: { type: String, required: true }
     },
-  ],
-});
+    list: [
+      {
+        bn: { type: String, required: true },
+        en: { type: String, required: true },
+      },
+    ],
+  });
+  
 
 const eventSchema = new mongoose.Schema(
   {
@@ -37,9 +41,19 @@ const eventSchema = new mongoose.Schema(
       of: String,
       required: true,
     },
+    date: {
+      type: Map,
+      of: String,
+      required: true,
+    },
     image: {
       type: String,
       required: true,
+    },
+    status: {
+      type: Boolean,
+      required: true,
+      default:true
     },
     category: {
       bn: {
