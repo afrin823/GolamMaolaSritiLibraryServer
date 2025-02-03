@@ -5,6 +5,7 @@ import { globalError } from "./rsc/error/globalError.js";
 import { notFoundRoute } from "./rsc/error/notFoundRoute.js";
 import { bookRoute } from "./rsc/modules/book/book.router.js";
 import { eventRoute } from "./rsc/modules/events/event.router.js";
+import { messageRoute } from "./rsc/modules/message/message.router.js";
 import { userRoute } from "./rsc/modules/users/user.router.js";
 import { main } from "./rsc/server/server.js";
 
@@ -33,6 +34,7 @@ app.get("/", (req, res) => {
 app.use("/api/v1/user", userRoute);
 app.use("/api/v1/book", bookRoute);
 app.use("/api/v1/event", eventRoute);
+app.use("/api/v1/message", messageRoute);
 
 app.all("*", notFoundRoute);
 app.use(globalError);
