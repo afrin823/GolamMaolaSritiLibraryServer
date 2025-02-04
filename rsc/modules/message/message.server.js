@@ -7,14 +7,14 @@ const createMessage = async (payload) => {
 };
 const getAllMessageDB = async (query) => {
   const messageSearchingField = ["name", "phone"];
-  const bookQuery = new QueryBuilder(Message.find(), query)
+  const messageQuery = new QueryBuilder(Message.find(), query)
     .search(messageSearchingField)
     .filter()
     .sort()
     .paginate()
     .fields();
 
-  const result = await bookQuery.modelQuery;
+  const result = await messageQuery.modelQuery;
   return result;
 };
 
@@ -35,5 +35,5 @@ export const messageServer = {
   createMessage,
   getAllMessageDB,
   deleteMessage,
-  updateMessageDB
+  updateMessageDB,
 };
