@@ -1,0 +1,73 @@
+const mongoose = require("mongoose");
+
+const recommendationSchema = new mongoose.Schema({
+  personalInformation: {
+    name: String,
+    dob: Date,
+    profilePicture: String, // Base64 image string
+    currentClass: String,
+    institution: String,
+    mobileNumber: String,
+  },
+  bankDetails: {
+    accountNumber: String,
+    bankName: String,
+    branch: String,
+    schoolBankName: String,
+  },
+  presentAddress: {
+    city: String,
+    village: String,
+  },
+  permanentAddress: {
+    city: String,
+    village: String,
+  },
+  guardianInformation: {
+    guardianName: String,
+    guardianOccupation: String,
+    guardianSignature: String,
+    fatherName: String,
+    fatherOccupation: String,
+    motherName: String,
+    motherOccupation: String,
+  },
+  financialDetails: {
+    monthlyIncome: String,
+    earningMember: String,
+    relationshipEarners: String,
+  },
+  familyDetails: {
+    brothers: String,
+    sisters: String,
+    familyMember: String,
+    studyingBrother: String,
+    studyingSister: String,
+    studyingSiblings: String,
+  },
+  educationHistory: {
+    fifthGrade: String,
+    fifthYear: String,
+    fiveResult: String,
+    eightGrade: String,
+    eightYear: String,
+    eightResult: String,
+    secondaryGrade: String,
+    secondaryYear: String,
+    secondaryResult: String,
+    higherSecondaryGrade: String,
+    higherSecondaryYear: String,
+    higherSecondaryResult: String,
+    nightResult: String,
+    nightYear: String,
+  },
+  additionalDetails: {
+    amountCultivable: String,
+    applicantSignature: String,
+    relationship: String,
+  },
+}, { timestamps: true });
+
+const Recommendation = mongoose.model("Recommendation", recommendationSchema);
+
+module.exports = Recommendation;

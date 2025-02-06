@@ -8,6 +8,7 @@ import { eventRoute } from "./rsc/modules/events/event.router.js";
 import { galleryRoute } from "./rsc/modules/gallary/gallery.router.js";
 import { messageRoute } from "./rsc/modules/message/message.router.js";
 import { noticeRoute } from "./rsc/modules/notice/notice.router.js";
+import { scholarshipRoute } from "./rsc/modules/scholarship/scholarship/scholarship.router.js";
 import { userRoute } from "./rsc/modules/users/user.router.js";
 import { main } from "./rsc/server/server.js";
 
@@ -39,6 +40,7 @@ app.use("/api/v1/event", eventRoute);
 app.use("/api/v1/message", messageRoute);
 app.use("/api/v1/gallery", galleryRoute);
 app.use("/api/v1/notice", noticeRoute);
+app.use("/api/v1/scholarship", scholarshipRoute);
 
 app.all("*", notFoundRoute);
 app.use(globalError);
