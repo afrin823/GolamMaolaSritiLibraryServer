@@ -1,6 +1,11 @@
+import MultiLanguageQueryBuilder from "../../builder/MultiLanguageQueryBuilder.js";
 import AppError from "../../error/AppError.js";
 import { validateSubCategory } from "../events/event.utils.js";
-import { AnnualVariousCompetition, NationalDayCelebration, RegularEvents } from "./notice.constant.businessLogin.js";
+import {
+  AnnualVariousCompetition,
+  NationalDayCelebration,
+  RegularEvents,
+} from "./notice.constant.businessLogin.js";
 import { Notice } from "./notice.model.js";
 
 const createNoticeDB = async (payload) => {
@@ -13,7 +18,7 @@ const createNoticeDB = async (payload) => {
     content,
     category,
     subCategory,
-  } = payload; 
+  } = payload;
   if (
     !createdBy ||
     !title ||
@@ -96,34 +101,34 @@ const createNoticeDB = async (payload) => {
   return result;
 };
 
-// const searchEventDB = async (query) => {
-//   const eventQuery = new MultiLanguageQueryBuilder(Event.find(), query)
-//     .search(["title", "description", "category"])
-//     .filter()
-//     .sort()
-//     .paginate()
-//     .fields();
+const searchNoticeDB = async (query) => {
+  const eventQuery = new MultiLanguageQueryBuilder(Notice.find(), query)
+    .search(["title", "description", "category"])
+    .filter()
+    .sort()
+    .paginate()
+    .fields();
 
-//   const result = await eventQuery.modelQuery;
-//   return result;
-// };
+  const result = await eventQuery.modelQuery;
+  return result;
+};
 
-// const getSingleEventDB = async (id) => {
-//   const result = await Event.findById(id);
-//   return result;
-// };
-// const deleteEventDB = async (id) => {
-//   const result = await Event.findByIdAndUpdate(
-//     id,
-//     { idDeleted: true },
-//     { new: true }
-//   );
-//   return result;
-// };
+const getSingleNoticeDB = async (id) => {
+  const result = await Notice.findById(id);
+  return result;
+};
+const deleteNoticeDB = async (id) => {
+  const result = await Notice.findByIdAndUpdate(
+    id,
+    { idDeleted: true },
+    { new: true }
+  );
+  return result;
+};
 
 export const noticeServer = {
   createNoticeDB,
-  //   searchEventDB,
-  //   getSingleEventDB,
-  //   deleteEventDB,
+  searchNoticeDB,
+  getSingleNoticeDB,
+  deleteNoticeDB,
 };
