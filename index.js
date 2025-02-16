@@ -18,7 +18,7 @@ const corsOptions = {
   origin: [
     "http://localhost:5173",
     "http://localhost:5174",
-    "https://library-mangement-lyart.vercel.app",
+    "https://library-mangement-g3m2.vercel.app",
   ],
   credentials: true,
   optionSuccessStatus: 200,
